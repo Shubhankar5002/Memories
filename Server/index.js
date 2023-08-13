@@ -6,10 +6,11 @@ import postRoutes from "./Routes/Post.js";
 import 'dotenv/config';
 
 const app=Express();
-app.use('/post',postRoutes);
 app.use(bodyParser.json({limit:'30mb' , extended:true}));
 app.use(bodyParser.urlencoded({limit:'30mb' , extended:true}));
 app.use(Cors());
+
+app.use('/posts',postRoutes);
 const Port=5000 || process.env.PORT;
 mongoose.connect(process.env.Connection_url)
         .then(()=>{
