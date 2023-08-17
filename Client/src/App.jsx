@@ -1,4 +1,4 @@
-import React,{ useEffect } from "react";
+import React,{ useEffect, useState } from "react";
 import {Container,AppBar,Typography,Grid,Grow} from '@material-ui/core';
 import Memoriesicon from './images/3837407.png';
 import { getPost } from './actions/posts';
@@ -6,13 +6,15 @@ import Posts from './components/Posts/Posts';
 import Form from './components/Form/Form';
 import useStyles from './styles.jsx'
 import { useDispatch } from "react-redux";
+import './index.css'
 
 function App(){
+    const [currentId,setcurrentId]=useState(null);
     const classes=useStyles();
     const dispatch=useDispatch();
     useEffect(()=>{
         dispatch(getPost());
-    },[dispatch])
+    },[currentId,dispatch])
         return(
             <Container maxWidth="lg">
                 <AppBar className={classes.appBar} position="static" color="inherit">
@@ -23,10 +25,10 @@ function App(){
                     <Container>
                         <Grid container justifyContent="space-between" alignItems="stretch" spacing={3}>
                             <Grid item xs={12} sm={7}>
-                                <Posts />
+                                <Posts setcurrentId={setcurrentId} />
                             </Grid>
                             <Grid item xs={12} sm={4}>
-                                <Form />
+                                <Form currentId={currentId} setcurrentId={setcurrentId}/>
                             </Grid>
                         </Grid>
                     </Container>

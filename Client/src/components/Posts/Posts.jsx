@@ -2,7 +2,7 @@ import { useSelector } from 'react-redux';
 import {  Grid,CircularProgress } from '@material-ui/core';
 import Post from './Post/Post';
 import useStyles from './Style.jsx'
-const Posts =function (){
+const Posts =function ({setcurrentId}){
     const classes=useStyles();
     const posts = useSelector((state)=>state.posts);
     console.log(posts);
@@ -12,7 +12,7 @@ const Posts =function (){
                 {
                     posts.map((post)=>(
                         <Grid  key={post._id} item xs={12} sm={6}>
-                            <Post post={post}/>
+                            <Post post={post} setcurrentId={setcurrentId}/>
                         </Grid>
                     ))
                 }

@@ -1,24 +1,34 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import useStyles from './Style.jsx'
 import FileBase from 'react-file-base64';
-import { useDispatch } from 'react-redux';
-import {createpost} from '../../actions/posts.js'
+import { useDispatch, useSelector } from 'react-redux';
+import {createpost, updatedPost} from '../../actions/posts.js'
 import { Typography, TextField, Button,Paper } from '@material-ui/core';
-const Form =function (){
+const Form =function ({currentId,setcurrentId}){
     const classes=useStyles();
     const [postdata,setdata]=useState({ creator:'',title:'',message:'',tags:'',selectedFile:''});
+    const post=useSelector((state)=>currentId ? state.posts.find((p)=> p._id===currentId) : null);
     const dispatch=useDispatch();
     const handlesubmit=(e)=>{
         e.preventDefault();
-        dispatch(createpost(postdata));
+        if(currentId===0){
+            dispatch(createpost(postdata));
+        }else{
+            dispatch(updatedPost(currentId,postdata))
+        }
+        clear();
     }
+    useEffect(()=>{
+        if(post){setdata(post);}
+    },[post])
     const clear=()=>{
+        setcurrentId(null);
         setdata({ creator: '', title: '', message: '', tags: '', selectedFile: '' });
     }
     return(
         <Paper className={classes.paper}>
             <form method='POST' autoComplete='off' noValidate onSubmit={handlesubmit} className={`${classes.root} ${classes.form}`}>
-                <Typography variant='h6'>Creating Memories</Typography>
+                <Typography variant='h6'>{currentId ? 'Editting' : 'Creating'} Memories</Typography>
                 <TextField name='creator' variant='outlined' label='creator' fullWidth value={postdata.creator} onChange={(e)=>setdata({...postdata,creator:e.target.value})}/>
                 <TextField name='title' variant='outlined' label='title' fullWidth value={postdata.title} onChange={(e)=>setdata({...postdata,title:e.target.value})}/>
                 <TextField name='message' variant='outlined' label='message' fullWidth value={postdata.message} onChange={(e)=>setdata({...postdata,message:e.target.value})}/>
