@@ -1,12 +1,14 @@
 import React,{ useEffect, useState } from "react";
-import {Container,AppBar,Typography,Grid,Grow} from '@material-ui/core';
-import Memoriesicon from './images/3837407.png';
+import {Container,Grid,Grow} from '@material-ui/core';
 import { getPost } from './actions/posts';
 import Posts from './components/Posts/Posts';
 import Form from './components/Form/Form';
+import { BrowserRouter as Router,Route,Routes } from "react-router-dom";
 import useStyles from './styles.jsx'
 import { useDispatch } from "react-redux";
 import './index.css'
+import Navbar from "./components/Navbar/Navbar";
+import Home from "./Home/home";
 
 function App(){
     const [currentId,setcurrentId]=useState(null);
@@ -17,22 +19,8 @@ function App(){
     },[currentId,dispatch])
         return(
             <Container maxWidth="lg">
-                <AppBar className={classes.appBar} position="static" color="inherit">
-                    <Typography className={classes.heading} variant="h2" align="center">Memories</Typography>
-                    <img className={classes.image} src={Memoriesicon} height='60' alt="Memories"/>
-                </AppBar>
-                <Grow in>
-                    <Container>
-                        <Grid className={classes.mainContainer} container justifyContent="space-between" alignItems="stretch" spacing={3}>
-                            <Grid item xs={12} sm={7}>
-                                <Posts setcurrentId={setcurrentId} />
-                            </Grid>
-                            <Grid item xs={12} sm={4}>
-                                <Form currentId={currentId} setcurrentId={setcurrentId}/>
-                            </Grid>
-                        </Grid>
-                    </Container>
-                </Grow>
+               <Navbar/>
+               <Home/>
             </Container>
         )
 }
